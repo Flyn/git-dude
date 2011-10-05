@@ -21,7 +21,11 @@
 # Distributed under the GNU General Public License, version 2.0.
 
 interval=$(git config dude.interval)
+tracUrl=$(git config dude.tracUrl)
 interval=${interval:-60}
+tracUrl=${tracUrl:="http://mytrac:8000"}
+
+echo "Using trac url: $tracUrl"
 
 icon_path=$(git config dude.icon)
 icon_path=${icon_path:-`pwd`/icon.png}
@@ -45,6 +49,7 @@ while true; do
   for dir_name in *; do
     if [[ -d $dir_name && $(cd $dir_name; git rev-parse --git-dir 2>/dev/null) ]]; then
       repo_name=$(basename $dir_name .git)
+      low_repo_name=$(echo $repo_name | tr '[:upper:]' '[:lower:]')
       cd "$dir_name"
 
       changes=$(git fetch -v 2>&1 | grep -F -- '->')
@@ -54,16 +59,16 @@ while true; do
           *..*)
             commit_range=$(echo "$line" | awk '{ print $1 }')
             branch_name=$(echo "$line" | awk '{ print $2 }')
-            commit_messages=$(git log $commit_range --pretty=format:'%s (%an)')
+            commit_messages=$(git log $commit_range --pretty=format:"%s (%an) <a href=\"$tracUrl/changeset/%H/$low_repo_name\">(DIFF)</a>")
             notify $icon_path "New commits in $repo_name/$branch_name" "$commit_messages"
             ;;
           *new\ branch*)
             branch_name=$(echo "$line" | awk '{ print $4 }')
-            notify $icon_path "New branch $repo_name/$branch_name"
+            notify $icon_path "New branch $repo_name/$branch_name" "<a href=\"$tracUrl/browser/$low_repo_name/?rev=$branch_name\">(BRANCH)</a>"
             ;;
           *new\ tag*)
             tag_name=$(echo "$line" | awk '{ print $4 }')
-            notify $icon_path "New tag $repo_name/$tag_name"
+            notify $icon_path "New tag $repo_name/$tag_name" "<a href=\"$tracUrl/browser/$low_repo_name/?rev=$tag_name\">(TAG)</a>"
             ;;
         esac
       done <<< "$changes"
