@@ -1,8 +1,14 @@
-# git-dude
+# git-dude with trac links
 
-git-dude is a simple git desktop notifier. It monitors git repositories in
+git-dude is a simple git desktop notifier written by Marcin Kulik. It monitors git repositories in
 current directory for new commits/branches/tags and shows desktop notification if
 anything new arrived.
+
+TracLinks is a fork creating links to directly access commit, tag and branch pages on
+a trac installation configured with a GitPlugin.
+Links only works on KDE because Gnome seems to completely ignore Hyperlinks tags.
+
+_I didn't test it on Mac OS._
 
 ## How it works
 
@@ -10,34 +16,23 @@ It simply uses `git fetch` and parses its output to see what has changed. Then i
 formats new commit messages with `git log` and shows desktop notification with
 `notify-send` (Linux) or `growlnotify` (OSX). All of this in infinite loop.
 
-## How does it look
-
-Fedora:
-
-![git-dude on Fedora](https://github.com/downloads/sickill/git-dude/git-dude-fedora-shot.png)
-
-Ubuntu:
-
-![git-dude on Ubuntu](https://github.com/downloads/sickill/git-dude/git-dude-ubuntu-shot.png)
-
-OSX:
-
-![git-dude on Mac OSX](https://github.com/downloads/sickill/git-dude/git-dude-osx-shot.png)
 
 ## Requirements
 
 On Linux:
 
 * `notify-send` (Fedora: _libnotify_ package, Ubuntu: _libnotify-bin_ package)
+* KDE
 
 On OSX:
 
 * `growlnotify`, from [Growl Extras](http://growl.info/extras.php#growlnotify)
   (Homebrew: _growlnotify_ package)
 
+
 ## Installation
 
-    $ curl -skL https://github.com/sickill/git-dude/raw/master/git-dude >~/bin/git-dude
+    $ curl -skL https://github.com/Flyn/git-dude/raw/traclinks/git-dude >~/bin/git-dude
     $ chmod +x ~/bin/git-dude
 
 ## Usage
@@ -84,7 +79,15 @@ Set how often git-dude should check for changes (in seconds, default: 60):
 Set path to icon used by desktop notifications (default: none):
 
     $ git config --global dude.icon ~/.git-dude/github_32.png
+    
+Set url for the trac server:
+
+    $ git config --global dude.tracUrl "http://mytrac:8000"
 
 ## Author
 
+Original script:
 Marcin Kulik (http://ku1ik.com/ | @sickill)
+
+Trac Links branch:
+Flyn (@flynscape)
