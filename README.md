@@ -14,15 +14,15 @@ _I didn't test it on Mac OS._
 
 It simply uses `git fetch` and parses its output to see what has changed. Then it
 formats new commit messages with `git log` and shows desktop notification with
-`notify-send` (Linux) or `growlnotify` (OSX). All of this in infinite loop.
+`notify-send` / `kdialog` (Linux) or `growlnotify` (OSX). All of this in infinite loop.
 
 
 ## Requirements
 
 On Linux:
 
-* `notify-send` (Fedora: _libnotify_ package, Ubuntu: _libnotify-bin_ package)
-* KDE
+* `notify-send` on Gnome (Fedora: _libnotify_ package, Ubuntu: _libnotify-bin_ package)
+* `kdialog` on KDE (included in KDE)
 
 On OSX:
 
