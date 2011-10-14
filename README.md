@@ -35,6 +35,9 @@ On OSX:
     $ curl -skL https://github.com/Flyn/git-dude/raw/traclinks/git-dude >~/bin/git-dude
     $ chmod +x ~/bin/git-dude
 
+\* Make sure `~/bin` is in your `$PATH` or put `git-dude` script somewhere else
+on your `$PATH`.
+
 ## Usage
 
 git-dude iterates over repositories that live inside _the dude directory_. This
@@ -72,6 +75,8 @@ separate git-dude process.
 
 ## Configuration
 
+### Global
+
 Set how often git-dude should check for changes (in seconds, default: 60):
 
     $ git config --global dude.interval 30
@@ -83,6 +88,13 @@ Set path to icon used by desktop notifications (default: none):
 Set url for the trac server:
 
     $ git config --global dude.tracUrl "http://mytrac:8000"
+
+### Per-repository
+
+Set path to icon used by desktop notifications for this repository (default:
+taken from global setting):
+
+    $ git config dude.icon ~/.git-dude/dm-core/datamapper.png
 
 ## Author
 

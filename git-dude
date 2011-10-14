@@ -27,10 +27,6 @@ tracUrl=${tracUrl:="http://mytrac:8000"}
 
 echo "Using trac url: $tracUrl"
 
-icon_path=$(git config dude.icon)
-icon_path=${icon_path:-`pwd`/icon.png}
-eval icon_path=$icon_path # to expand ~
-
 export LC_ALL=C # make sure git talks english
 
 [[ -d $1 ]] && cd $1
@@ -49,12 +45,16 @@ function notify() {
 
 while true; do
   for dir_name in *; do
-    if [[ -d $dir_name && $(cd $dir_name; git rev-parse --git-dir 2>/dev/null) ]]; then
-      repo_name=$(basename $dir_name .git)
+    if [[ -d "$dir_name" && $(cd "$dir_name"; git rev-parse --git-dir 2>/dev/null) ]]; then
+      repo_name=$(basename "$dir_name" .git)
       low_repo_name=$(echo $repo_name | tr '[:upper:]' '[:lower:]')
       cd "$dir_name"
 
-      changes=$(git fetch -v 2>&1 | grep -F -- '->')
+      changes=$(git fetch 2>&1 | grep -F -- '->' | sed -E 's/^\s+\+\s+//')
+
+      icon_path=$(git config dude.icon)
+      icon_path=${icon_path:-`pwd`/icon.png}
+      eval icon_path=$icon_path # to expand ~
 
       while read -r line; do
         case $line in
